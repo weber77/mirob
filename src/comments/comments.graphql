@@ -1,0 +1,63 @@
+scalar UUID
+
+type Comment {
+  id: UUID
+  content: String
+  profile: Profile
+  proposal: String
+  thread: String
+  votes: Int
+  voted: [Vote]
+  bookmarks: [Bookmark]
+  createdAt: Date
+  updatedAt: Date
+}
+
+input CreateCommentInput {
+  content: String
+  profile: UUID!
+  proposal: String
+  thread: String
+}
+
+input UpdateCommentInput {
+  id: UUID!
+  content: String
+  profile: UUID!
+  proposal: String
+  thread: String
+}
+
+enum VoteStatus {
+  UP
+  DOWN
+}
+
+input VoteCommentInput {
+  id: UUID!
+  profile: UUID!
+  status: VoteStatus
+}
+
+type CommentsResponse {
+  total: Int
+  comments: [Comment]
+}
+
+type Query {
+  comments(
+    profile: UUID
+    proposal: UUID
+    thread: UUID
+    pageSize: Int
+    pageNum: Int
+  ): CommentsResponse
+  comment(id: UUID!): Comment
+}
+
+type Mutation {
+  createComment(createCommentInput: CreateCommentInput!): Comment!
+  updateComment(updateCommentInput: UpdateCommentInput!): Comment!
+  removeComment(id: UUID!): Comment
+  voteComment(voteCommentInput: VoteCommentInput): Comment
+}

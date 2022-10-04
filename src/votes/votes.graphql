@@ -1,0 +1,17 @@
+scalar UUID
+
+enum VoteStatus {
+  UP
+  DOWN
+}
+
+type Vote {
+  id: UUID
+  profileId: UUID
+  profile: Profile
+  commentId: UUID
+  comment: Comment
+  status: VoteStatus
+  createdAt: Date
+  updatedAt: Date
+}

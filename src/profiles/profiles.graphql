@@ -1,0 +1,70 @@
+scalar UUID
+
+enum ProfileRole {
+  ADMIN
+  SHARIAH
+  AUTHOR
+  USER
+}
+
+type Profile {
+  id: UUID
+  nonce: String
+  walletAddress: String
+  role: ProfileRole
+  picture: String
+  username: String
+  email: String
+  bookmarks: [Bookmark]
+  createdAt: Date
+  updatedAt: Date
+}
+
+input LoginProfileInput {
+  walletAddress: String!
+  signature: String!
+  picture: String
+  username: String
+  email: String
+}
+
+input UpdateProfileInput {
+  id: String!
+  walletAddress: String
+  picture: String
+  username: String
+  email: String
+}
+
+input UpdateProfileRoleInput {
+  id: UUID!
+  role: ProfileRole!
+}
+
+input BookMarkCommentInput {
+  id: UUID!
+  comment: UUID!
+}
+
+type LoginResponse {
+  jwtToken: String
+}
+
+type ProfilesResponse {
+  total: Int!
+  profiles: [Profile]!
+}
+
+type Query {
+  profiles(search: String, pageSize: Int, pageNum: Int): ProfilesResponse
+  profile(walletAddress: String!): Profile
+}
+
+type Mutation {
+  loginProfile(loginProfileInput: LoginProfileInput!): LoginResponse!
+  updateProfile(updateProfileInput: UpdateProfileInput!): Profile!
+  updateProfileRole(updateProfileRoleInput: UpdateProfileRoleInput): Profile!
+  removeProfile(id: UUID!): Profile
+  bookmarkComment(bookmarkCommentInput: BookMarkCommentInput): Profile
+  unBookmarkComment(bookmarkCommentInput: BookMarkCommentInput): Profile
+}

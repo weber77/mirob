@@ -1,0 +1,65 @@
+scalar UUID
+
+enum ThreadStatus {
+  DRAFT
+  IN_REVIEW
+  ACCEPTED
+  REJECTED
+  LIVE
+  RESOLVED
+}
+
+type Thread {
+  id: UUID
+  profile: Profile
+  title: String
+  description: String
+  status: ThreadStatus
+  categories: [Category]
+  views: Int
+  createdAt: Date
+  updatedAt: Date
+}
+
+input CreateThreadInput {
+  profile: UUID!
+  title: String!
+  description: String!
+  categories: [UUID]
+}
+
+input UpdateThreadInput {
+  id: UUID!
+  profile: UUID!
+  title: String
+  description: String
+  categories: [UUID]
+}
+
+input UpdateThreadStatusInput {
+  id: UUID!
+  status: ThreadStatus!
+}
+
+type ThreadsResponse {
+  total: Int!
+  threads: [Thread]!
+}
+
+type Query {
+  threads(
+    status: ThreadStatus
+    search: String
+    pageSize: Int
+    pageNum: Int
+  ): ThreadsResponse
+  thread(id: UUID): Thread
+}
+
+type Mutation {
+  createThread(createThreadInput: CreateThreadInput!): Thread!
+  updateThread(updateThreadInput: UpdateThreadInput!): Thread!
+  updateThreadStatus(updateThreadStatusInput: UpdateThreadStatusInput!): Thread!
+  removeThread(id: UUID!): Thread
+  incrementThreadViews(id: UUID!): Thread
+}

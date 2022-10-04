@@ -1,0 +1,91 @@
+scalar Date
+scalar UUID
+
+enum ProposalStatus {
+  DRAFT
+  IN_REVIEW
+  LIVE
+  ENDED
+  ACCEPTED
+  REJECTED
+  CANCELLED
+}
+
+type Proposal {
+  id: UUID
+  profile: Profile
+  title: String
+  description: String
+  status: ProposalStatus
+  attachments: [String]
+  links: [String]
+  discussion: String
+  hashtags: [String]
+  categories: [Category]
+  views: Int
+  startDate: Date
+  endDate: Date
+  createdAt: Date
+  updatedAt: Date
+}
+
+input CreateProposalInput {
+  profile: UUID!
+  title: String!
+  description: String!
+  attachments: [String] = []
+  links: [String] = []
+  discussion: String = ""
+  hashtags: [String] = []
+  categories: [UUID] = []
+  startDate: Date
+  endDate: Date
+  createdAt: Date
+  updatedAt: Date
+}
+
+input UpdateProposalInput {
+  id: UUID!
+  profile: UUID!
+  title: String
+  description: String
+  attachments: [String] = []
+  links: [String] = []
+  discussion: String = ""
+  hashtags: [String] = []
+  categories: [UUID] = []
+  startDate: Date
+  endDate: Date
+  createdAt: Date
+  updatedAt: Date
+}
+
+input UpdateProposalStatusInput {
+  id: UUID!
+  status: ProposalStatus
+}
+
+type ProposalsResponse {
+  total: Int!
+  proposals: [Proposal]!
+}
+
+type Query {
+  proposals(
+    status: ProposalStatus
+    search: String
+    pageSize: Int
+    pageNum: Int
+  ): ProposalsResponse
+  proposal(id: UUID!): Proposal
+}
+
+type Mutation {
+  createProposal(createProposalInput: CreateProposalInput): Proposal!
+  updateProposal(updateProposalInput: UpdateProposalInput!): Proposal!
+  updateProposalStatus(
+    updateProposalStatusInput: UpdateProposalStatusInput!
+  ): Proposal!
+  removeProposal(id: UUID!): Proposal
+  incrementProposalViews(id: UUID!): Proposal
+}

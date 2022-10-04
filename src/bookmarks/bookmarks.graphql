@@ -1,0 +1,9 @@
+type Bookmark {
+  id: UUID
+  profileId: UUID
+  profile: Profile
+  commentId: UUID
+  comment: Comment
+  createdDate: Date
+  updatedDate: Date
+}

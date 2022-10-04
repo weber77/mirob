@@ -1,0 +1,36 @@
+scalar UUID
+
+type Category {
+  id: UUID
+  title: String
+  description: String
+  createdAt: String
+  updatedAt: String
+}
+
+input CreateCategoryInput {
+  title: String
+  description: String
+}
+
+input UpdateCategoryInput {
+  id: UUID
+  title: String
+  description: String
+}
+
+type CategoriesResponse {
+  total: Int
+  categories: [Category]
+}
+
+type Query {
+  categories(pageSize: Int, pageNum: Int): CategoriesResponse
+  category(id: UUID!): Category
+}
+
+type Mutation {
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  removeCategory(id: UUID!): Category
+}
